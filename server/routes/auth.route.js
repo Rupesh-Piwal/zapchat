@@ -1,4 +1,4 @@
-import express from "express";
+import { Router } from "express";
 import {
   checkAuth,
   logIn,
@@ -8,7 +8,7 @@ import {
 } from "../controllers/auth.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/signup", signUp);
 router.post("/login", logIn);
