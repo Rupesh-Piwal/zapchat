@@ -17,110 +17,93 @@ export const useAuthStore = create((set, get) => ({
   onlineUsers: [],
   socket: null,
 
-  // Method: Checks the user's authentication status
   checkAuth: async () => {
     try {
-      // Make a GET request to check authentication status
       const res = await axiosInstance.get("/auth/check");
-      // Update authUser state with the authenticated user's data
       set({ authUser: res.data });
-      // Connect to the WebSocket server
       get().connectSocket();
     } catch (error) {
       console.log("Error in checkAuth:", error);
-      // Set authUser to null if authentication check fails
       set({ authUser: null });
     } finally {
-      // Set isCheckingAuth to false after the process completes
       set({ isCheckingAuth: false });
     }
   },
 
-  // Method: Handles user signup
   signup: async (data) => {
-    set({ isSigningUp: true }); // Set isSigningUp to true during the signup process
+    set({ isSigningUp: true }); 
     try {
-      // Make a POST request to create a new user account
       const res = await axiosInstance.post("/auth/signup", data);
-      set({ authUser: res.data }); // Update authUser state with the new user's data
-      toast.success("Account created successfully"); // Show success message
-      get().connectSocket(); // Connect to the WebSocket server
+      set({ authUser: res.data }); 
+      toast.success("Account created successfully"); 
+      get().connectSocket(); 
     } catch (error) {
-      toast.error(error.response.data.message); // Show error message if signup fails
+      toast.error(error.response.data.message); 
     } finally {
-      set({ isSigningUp: false }); // Reset isSigningUp state
+      set({ isSigningUp: false }); 
     }
   },
 
-  // Method: Handles user login
+ 
   login: async (data) => {
-    set({ isLoggingIn: true }); // Set isLoggingIn to true during the login process
+    set({ isLoggingIn: true }); 
     try {
-      // Make a POST request to log the user in
       const res = await axiosInstance.post("/auth/login", data);
-      set({ authUser: res.data }); // Update authUser state with the logged-in user's data
-      toast.success("Logged in successfully"); // Show success message
-      get().connectSocket(); // Connect to the WebSocket server
+      set({ authUser: res.data }); 
+      toast.success("Logged in successfully"); 
+      get().connectSocket(); 
     } catch (error) {
-      toast.error(error.response.data.message); // Show error message if login fails
+      toast.error(error.response.data.message); 
     } finally {
-      set({ isLoggingIn: false }); // Reset isLoggingIn state
+      set({ isLoggingIn: false }); 
     }
   },
 
-  // Method: Handles user logout
+
   logout: async () => {
     try {
-      // Make a POST request to log the user out
       await axiosInstance.post("/auth/logout");
-      set({ authUser: null }); // Clear the authUser state
-      toast.success("Logged out successfully"); // Show success message
-      get().disconnectSocket(); // Disconnect from the WebSocket server
+      set({ authUser: null });
+      toast.success("Logged out successfully"); 
+      get().disconnectSocket(); 
     } catch (error) {
-      toast.error(error.response.data.message); // Show error message if logout fails
+      toast.error(error.response.data.message); 
     }
   },
 
-  // Method: Updates the user's profile
   updateProfile: async (data) => {
-    set({ isUpdatingProfile: true }); // Set isUpdatingProfile to true during the update process
+    set({ isUpdatingProfile: true }); 
     try {
-      // Make a PUT request to update the user's profile
       const res = await axiosInstance.put("/auth/update-profile", data);
-      set({ authUser: res.data }); // Update authUser state with the updated profile data
-      toast.success("Profile updated successfully"); // Show success message
+      set({ authUser: res.data }); 
+      toast.success("Profile updated successfully"); 
     } catch (error) {
       console.log("Error in update profile:", error);
-      toast.error(error.response.data.message); // Show error message if update fails
+      toast.error(error.response.data.message);
     } finally {
-      set({ isUpdatingProfile: false }); // Reset isUpdatingProfile state
+      set({ isUpdatingProfile: false }); 
     }
   },
 
-  // Method: Connects to the WebSocket server
   connectSocket: () => {
-    const { authUser } = get(); // Retrieve authUser from the state
-    // If no user is authenticated or the socket is already connected, do nothing
+    const { authUser } = get(); 
     if (!authUser || get().socket?.connected) return;
 
-    // Create a new Socket.IO client instance
     const socket = io(BASE_URL, {
       query: {
-        userId: authUser._id, // Pass the user's ID as a query parameter
+        userId: authUser._id,r
       },
     });
-    socket.connect(); // Connect the socket
+    socket.connect(); 
 
-    set({ socket: socket }); // Update the socket state
+    set({ socket: socket });
 
-    // Listen for the "getOnlineUsers" event to update the online users list
     socket.on("getOnlineUsers", (userIds) => {
-      set({ onlineUsers: userIds }); // Update onlineUsers state with the received data
+      set({ onlineUsers: userIds }); 
     });
   },
 
-  // Method: Disconnects from the WebSocket server
   disconnectSocket: () => {
-    if (get().socket?.connected) get().socket.disconnect(); // Disconnect the socket if connected
+    if (get().socket?.connected) get().socket.disconnect(); 
   },
 }));
