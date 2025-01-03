@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import path from "path";
 import { app, server } from "./lib/socket.js";
+import { connectDB } from "./lib/db.js";
 
 dotenv.config();
 
@@ -25,24 +26,10 @@ app.use(
   })
 );
 
-// MongoDB Connection
-const connectToDatabase = async () => {
-  try {
-    await mongoose.connect(MONGODB_URL, {});
-    console.log("✓ MongoDB connected successfully!");
+server.listen(PORT, () => {
+  console.log("server is running on PORT:" + PORT);
+  connectDB();
+});
 
-    // Start server after successful DB connection
-    server.listen(PORT, () => {
-      console.log(`✓ Server running on port: ${PORT}`);
-    });
-  } catch (err) {
-    console.error("MongoDB connection error:", err);
-    process.exit(1);
-  }
-};
-
-connectToDatabase(); // Call the async function
-
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
