@@ -5,11 +5,13 @@ import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
+import { app, server } from "./lib/socket.js";
 
-// Load environment variables
 dotenv.config();
 
-const app = express();
+const __dirname = path.resolve();
+
 const PORT = process.env.PORT || 5001;
 const MONGODB_URL = process.env.MONGODB_URL;
 
@@ -30,7 +32,7 @@ const connectToDatabase = async () => {
     console.log("✓ MongoDB connected successfully!");
 
     // Start server after successful DB connection
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`✓ Server running on port: ${PORT}`);
     });
   } catch (err) {

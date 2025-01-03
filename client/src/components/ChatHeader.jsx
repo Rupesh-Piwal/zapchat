@@ -4,6 +4,7 @@ import { useChatStore } from "../store/useChatStore";
 
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
+
   const { onlineUsers } = useAuthStore();
 
   return (
@@ -20,7 +21,13 @@ const ChatHeader = () => {
           </div>
           <div>
             <h3 className="font-medium">{selectedUser.fullName}</h3>
-            <p className="text-sm text-base-content/70">
+            <p
+              className={`text-sm ${
+                onlineUsers.includes(selectedUser._id)
+                  ? "text-green-500"
+                  : "text-red-400"
+              }`}
+            >
               {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
             </p>
           </div>
