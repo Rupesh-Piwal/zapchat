@@ -18,5 +18,8 @@
     "url": "https://github.com/Rupesh-Piwal/zapchat/issues"
   },
   "homepage": "https://github.com/Rupesh-Piwal/zapchat#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "framer-motion": "^11.18.1"
+  }
 }
