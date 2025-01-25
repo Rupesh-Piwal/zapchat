@@ -38,5 +38,24 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: primary;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: hsl(var(--base-200) / 0.5);
+  border-radius: 4px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: hsl(var(--base-content) / 0.3);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--base-content) / 0.5);
 }
