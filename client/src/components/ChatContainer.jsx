@@ -50,11 +50,19 @@ const ChatContainer = () => {
   }
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden bg-base-200/50 backdrop-blur-sm">
+    <div
+      className="flex-1 flex flex-col overflow-hidden bg-base-200/50 bg-gradient-to-br from-base-100 via-base-200 to-base-300 
+  backdrop-blur-md 
+  shadow-xl 
+  rounded-lg 
+  border border-base-300/20 "
+    >
       <ChatHeader />
 
       <motion.div
-        className="flex-1 overflow-y-auto p-4 space-y-4"
+        className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-custom 
+      bg-gradient-to-br from-base-100/50 via-base-200/30 to-base-300/20 
+      backdrop-blur-sm"
         ref={scrollContainerRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
