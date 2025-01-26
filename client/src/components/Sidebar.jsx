@@ -33,22 +33,22 @@ const Sidebar = () => {
   if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-20 lg:w-80 border-r border-base-300 flex flex-col transition-all duration-300 bg-base-100/95 backdrop-blur-sm">
-      <div className="border-b border-base-300 w-full p-4">
+    <aside className="h-full w-20 lg:w-80 border-r border-[#272A30] flex flex-col transition-all duration-300 bg-[#1C1E22] backdrop-blur-sm">
+      <div className="border-b border-[#272A30] w-full p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Users className="size-6 text-primary" />
-            <span className="font-semibold text-lg hidden lg:block">
+            <Users className="size-6 text-[#337EFF]" />
+            <span className="font-semibold text-lg text-[#FFFFFF] hidden lg:block">
               Contacts
             </span>
           </div>
           <button
-            className="btn btn-ghost btn-sm btn-circle lg:hidden"
+            className="p-2 rounded-full hover:bg-[#272A30] lg:hidden"
             onClick={() =>
               document.documentElement.classList.toggle("sidebar-expanded")
             }
           >
-            <ChevronDown className="size-4" />
+            <ChevronDown className="size-4 text-[#FFFFFF]" />
           </button>
         </div>
         <div className="mt-4 hidden lg:block">
@@ -58,9 +58,9 @@ const Sidebar = () => {
               placeholder="Search contacts..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input input-bordered input-sm w-full pl-9"
+              className="w-full pl-9 pr-3 py-2 rounded-lg bg-[#272A30] text-[#FFFFFF] border border-[#337EFF]/20 focus:outline-none focus:ring-2 focus:ring-[#337EFF]"
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-4 text-base-content/50" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-4 text-[#747881]" />
           </div>
         </div>
         <div className="mt-3 hidden lg:flex items-center justify-between">
@@ -69,17 +69,17 @@ const Sidebar = () => {
               type="checkbox"
               checked={showOnlineOnly}
               onChange={(e) => setShowOnlineOnly(e.target.checked)}
-              className="checkbox checkbox-primary checkbox-sm"
+              className="appearance-none w-4 h-4 rounded border border-[#337EFF] checked:bg-[#337EFF] checked:border-transparent"
             />
-            <span className="text-sm">Show online only</span>
+            <span className="text-sm text-[#FFFFFF]">Show online only</span>
           </label>
-          <span className="text-xs text-base-content/60">
+          <span className="text-xs text-[#747881]">
             {onlineUsers.length - 1} online
           </span>
         </div>
       </div>
 
-      <div className="overflow-y-auto w-full py-3 flex-grow">
+      <div className="overflow-y-auto w-full py-3 flex-grow scrollbar-thin scrollbar-thumb-[#337EFF] scrollbar-track-[#272A30]">
         <AnimatePresence>
           {filteredUsers.map((user) => (
             <motion.button
@@ -87,8 +87,8 @@ const Sidebar = () => {
               onClick={() => setSelectedUser(user)}
               className={`
                 w-full p-3 flex items-center gap-3
-                hover:bg-base-200 transition-colors
-                ${selectedUser?._id === user._id ? "bg-base-200" : ""}
+                hover:bg-[#272A30] transition-colors
+                ${selectedUser?._id === user._id ? "bg-[#272A30]" : ""}
               `}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -99,18 +99,20 @@ const Sidebar = () => {
                 <img
                   src={user.profilePic || "/avatar.png"}
                   alt={user.fullName}
-                  className="size-12 object-cover rounded-full border-2 border-base-300"
+                  className="size-12 object-cover rounded-full border-2 border-[#337EFF]"
                 />
                 {onlineUsers.includes(user._id) && (
                   <span
                     className="absolute bottom-0 right-0 size-3 bg-green-500 
-                    rounded-full ring-2 ring-base-100"
+                    rounded-full ring-2 ring-[#1C1E22]"
                   />
                 )}
               </div>
               <div className="hidden lg:block text-left min-w-0 flex-grow">
-                <div className="font-medium truncate">{user.fullName}</div>
-                <div className="text-sm text-base-content/60">
+                <div className="font-medium truncate text-[#FFFFFF]">
+                  {user.fullName}
+                </div>
+                <div className="text-sm text-[#747881]">
                   {onlineUsers.includes(user._id) ? "Online" : "Offline"}
                 </div>
               </div>
@@ -119,7 +121,7 @@ const Sidebar = () => {
         </AnimatePresence>
 
         {filteredUsers.length === 0 && (
-          <div className="text-center text-base-content/60 py-8">
+          <div className="text-center text-[#747881] py-8">
             No contacts found
           </div>
         )}
