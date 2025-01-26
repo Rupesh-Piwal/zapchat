@@ -109,7 +109,7 @@ const Sidebar = () => {
                   src={user.profilePic || "/avatar.png"}
                   alt={user.fullName}
 
-                  className="size-12 object-cover rounded-full border-2 border-[#337EFF]"
+                  className="size-12 object-cover rounded-full "
                 />
                 {onlineUsers.includes(user._id) && (
                   <span
