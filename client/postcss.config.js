@@ -1,7 +1,7 @@
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
+import daisyui from "daisyui";
+
 export default {
-  plugins: [
-    require("tailwindcss"),
-    require("autoprefixer"),
-    require("daisyui"), 
-  ],
+  plugins: [tailwindcss, autoprefixer, daisyui],
 };
