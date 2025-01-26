@@ -6,9 +6,9 @@ import { useChatStore } from "../store/useChatStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
 
 const Sidebar = ({ onChatSelect }) => {
-  const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
-    useChatStore();
+  const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
   const { onlineUsers } = useAuthStore();
+  
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -17,14 +17,12 @@ const Sidebar = ({ onChatSelect }) => {
   }, [getUsers]);
 
   const filteredUsers = users
-    .filter(
-      (user) =>
-        (showOnlineOnly ? onlineUsers.includes(user._id) : true) &&
-        user.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+    .filter(user => 
+      (showOnlineOnly ? onlineUsers.includes(user._id) : true) &&
+      user.fullName.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) => {
-      if (onlineUsers.includes(a._id) && !onlineUsers.includes(b._id))
-        return -1;
+      if (onlineUsers.includes(a._id) && !onlineUsers.includes(b._id)) return -1;
       if (!onlineUsers.includes(a._id) && onlineUsers.includes(b._id)) return 1;
       return a.fullName.localeCompare(b.fullName);
     });
@@ -37,18 +35,42 @@ const Sidebar = ({ onChatSelect }) => {
       <div className="border-b border-[#272A30] w-full p-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Users className="size-6 text-[#337EFF]" />
-          <span className="font-semibold text-lg text-[#FFFFFF] hidden lg:block">
-            Contacts
-          </span>
+          <span className="font-semibold text-lg text-[#FFFFFF] hidden lg:block">Contacts</span>
         </div>
         <button
           className="p-2 rounded-full hover:bg-[#272A30] lg:hidden"
-          onClick={() =>
-            document.documentElement.classList.toggle("sidebar-expanded")
-          }
+          onClick={() => document.documentElement.classList.toggle("sidebar-expanded")}
         >
           <ChevronDown className="size-4 text-[#FFFFFF]" />
         </button>
+      </div>
+
+      {/* Search Bar */}
+      <div className="mt-4 mx-4">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search contacts..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-9 pr-3 py-2 rounded-lg bg-[#272A30] text-[#FFFFFF] border border-[#337EFF]/20 focus:outline-none focus:ring-2 focus:ring-[#337EFF]"
+          />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-4 text-[#747881]" />
+        </div>
+      </div>
+
+      {/* Online Users Toggle */}
+      <div className="mt-3 mx-4 flex items-center justify-between text-base-content/60">
+        <label className="cursor-pointer flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={showOnlineOnly}
+            onChange={(e) => setShowOnlineOnly(e.target.checked)}
+            className="appearance-none w-4 h-4 rounded border border-[#337EFF] checked:bg-[#337EFF] checked:border-transparent"
+          />
+          <span className="text-sm text-[#FFFFFF]">Show online only</span>
+        </label>
+        <span className="text-xs text-[#747881]">{onlineUsers.length - 1} online</span>
       </div>
 
       {/* Contact List */}
@@ -62,9 +84,7 @@ const Sidebar = ({ onChatSelect }) => {
                 onChatSelect(user);
               }}
               className={`w-full p-3 flex items-center gap-3 transition-colors ${
-                selectedUser?._id === user._id
-                  ? "bg-[#272A30]"
-                  : "hover:bg-[#272A30]"
+                selectedUser?._id === user._id ? "bg-[#272A30]" : "hover:bg-[#272A30]"
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -83,31 +103,23 @@ const Sidebar = ({ onChatSelect }) => {
                 )}
               </div>
 
-              {/* User Name (Only Show on Mobile) */}
+              {/* User Name (Mobile View) */}
               <div className="text-left flex-grow truncate block sm:hidden">
-                <div className="font-medium text-[#FFFFFF] truncate">
-                  {user.fullName}
-                </div>
+                <div className="font-medium text-[#FFFFFF] truncate">{user.fullName}</div>
               </div>
 
-              {/* User Name & Status (Only Show on Desktop) */}
+              {/* User Name & Status (Desktop View) */}
               <div className="hidden sm:block text-left min-w-0 flex-grow">
-                <div className="font-medium truncate text-[#FFFFFF]">
-                  {user.fullName}
-                </div>
-                <div className="text-sm text-[#747881]">
-                  {onlineUsers.includes(user._id) ? "Online" : "Offline"}
-                </div>
+                <div className="font-medium truncate text-[#FFFFFF]">{user.fullName}</div>
+                <div className="text-sm text-[#747881]">{onlineUsers.includes(user._id) ? "Online" : "Offline"}</div>
               </div>
             </motion.button>
           ))}
         </AnimatePresence>
 
-        {/* No Contacts Found */}
+        {/* No Contacts Found Message */}
         {filteredUsers.length === 0 && (
-          <div className="text-center text-[#747881] py-8">
-            No contacts found
-          </div>
+          <div className="text-center text-[#747881] py-8">No contacts found</div>
         )}
       </div>
     </aside>
