@@ -82,7 +82,7 @@ const Sidebar = ({ onChatSelect }) => {
       </div>
 
       {/* Contact List */}
-      <div className="overflow-y-auto w-full py-3 flex-grow scrollbar-thin scrollbar-thumb-[#337EFF] scrollbar-track-[#272A30]">
+      <div className="overflow-y-auto w-full py-3 flex-grow scrollbar-thin scrollbar-thumb-[#337EFF] scrollbar-track-[#272A30] hover:scrollbar-thumb-[#4a90e2]">
         <AnimatePresence>
           {filteredUsers.map((user) => (
             <motion.button
