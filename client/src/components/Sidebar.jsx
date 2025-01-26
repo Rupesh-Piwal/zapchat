@@ -33,7 +33,6 @@ const Sidebar = ({ onChatSelect }) => {
 
   return (
     <aside className="h-full w-screen md:w-20 lg:w-80 border-r border-[#272A30] flex flex-col transition-all duration-300 bg-[#1C1E22] backdrop-blur-sm">
-      {/* Top Bar */}
       <div className="border-b border-[#272A30] w-full p-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Users className="size-6 text-[#337EFF]" />
@@ -50,8 +49,6 @@ const Sidebar = ({ onChatSelect }) => {
           <ChevronDown className="size-4 text-[#FFFFFF]" />
         </button>
       </div>
-
-      {/* Search Bar */}
       <div className="mt-4 mx-4">
         <div className="relative">
           <input
@@ -64,8 +61,6 @@ const Sidebar = ({ onChatSelect }) => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-4 text-[#747881]" />
         </div>
       </div>
-
-      {/* Online Users Toggle */}
       <div className="mt-3 mx-4 flex items-center justify-between text-base-content/60">
         <label className="cursor-pointer flex items-center gap-2">
           <input
@@ -80,8 +75,6 @@ const Sidebar = ({ onChatSelect }) => {
           {onlineUsers.length - 1} online
         </span>
       </div>
-
-      {/* Contact List */}
       <div className="overflow-y-auto w-full py-3 flex-grow scrollbar-thin scrollbar-thumb-[#337EFF] scrollbar-track-[#272A30] hover:scrollbar-thumb-[#4a90e2]">
         <AnimatePresence>
           {filteredUsers.map((user) => (
@@ -111,8 +104,6 @@ const Sidebar = ({ onChatSelect }) => {
                   <span className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full ring-2 ring-[#1C1E22]" />
                 )}
               </div>
-
-              {/* User Name (Mobile View) */}
               <div className="text-left flex-grow truncate block sm:hidden">
                 <div className="font-medium text-[#FFFFFF] truncate">
                   {user.fullName}
@@ -131,8 +122,6 @@ const Sidebar = ({ onChatSelect }) => {
             </motion.button>
           ))}
         </AnimatePresence>
-
-        {/* No Contacts Found Message */}
         {filteredUsers.length === 0 && (
           <div className="text-center text-[#747881] py-8">
             No contacts found

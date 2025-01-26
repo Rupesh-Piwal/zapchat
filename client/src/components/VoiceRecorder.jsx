@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Mic, Square, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function VoiceRecorder({ onRecordingComplete }) {
   const [isRecording, setIsRecording] = useState(false);
@@ -45,10 +46,28 @@ export default function VoiceRecorder({ onRecordingComplete }) {
     onRecordingComplete(null);
   };
 
+  const handleMicClick = () => {
+    toast("Audio functionality is under development 🎤", {
+      icon: "🚧",
+      duration: 4000,
+      style: {
+        borderRadius: "10px",
+        background: "#17191C",
+        color: "#337EFF",
+        width: "400px", 
+        maxWidth: "95%", 
+        padding: "16px", 
+        fontSize: "14px", 
+        fontWeight: "500", 
+        border: "1px solid #337EFF", 
+      },
+    });
+  };
+
   return (
     <div className="flex items-center gap-2 bg-[#272A30] p-2 rounded-full">
       <button
-        onClick={isRecording ? stopRecording : startRecording}
+        onClick={handleMicClick}
         className={`p-2 rounded-full cursor-pointer ${
           isRecording
             ? "bg-red-500/20 hover:bg-red-500/30"

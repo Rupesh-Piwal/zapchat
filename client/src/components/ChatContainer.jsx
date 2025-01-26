@@ -12,69 +12,42 @@ import ChatHeader from "./ChatHeader";
 export default function ChatContainer({ onBackClick }) {
   const [audioUrl, setAudioUrl] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
-  const { messages, getMessages, sendMessage, isMessagesLoading } =
-    useChatStore();
+  const {
+    messages,
+    getMessages,
+    isMessagesLoading,
+    selectedUser,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useChatStore();
   const { authUser } = useAuthStore();
   const scrollContainerRef = useRef(null);
-  const fileInputRef = useRef(null);
+  const messageEndRef = useRef(null);
 
   useEffect(() => {
-    getMessages(authUser._id);
-  }, [authUser._id, getMessages]);
+    getMessages(selectedUser._id);
+
+    subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
+  }, [
+    selectedUser._id,
+    getMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
+    if (messageEndRef.current && messages) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setFileUrl({
-          name: file.name,
-          url: event.target.result,
-          type: file.type,
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleAudioRecordingComplete = (url) => {
-    setAudioUrl(url);
-  };
-
-  const handleSendMultimedia = () => {
-    if (fileUrl) {
-      sendMessage({
-        senderId: authUser._id,
-        file: fileUrl,
-        createdAt: new Date().toISOString(),
-      });
-      setFileUrl(null);
-    }
-    if (audioUrl) {
-      sendMessage({
-        senderId: authUser._id,
-        audio: audioUrl,
-        createdAt: new Date().toISOString(),
-      });
-      setAudioUrl(null);
-    }
-  };
 
   if (isMessagesLoading) return <MessageSkeleton />;
 
   return (
     <div className="flex flex-col h-full bg-[#080707] text-[#FFFFFF]">
-      {/* Chat Header with Back Button */}
       <ChatHeader onBackClick={onBackClick} />
-
-      {/* Chat Messages */}
       <motion.div
         ref={scrollContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-[#337EFF] scrollbar-track-[#272A30]"
@@ -90,26 +63,22 @@ export default function ChatContainer({ onBackClick }) {
                 msg.senderId === authUser._id ? "justify-end" : "justify-start"
               }`}
             >
-              {/* Message Content */}
               <div
                 className={`flex items-start gap-2 max-w-[80%] ${
                   msg.senderId === authUser._id ? "flex-row-reverse" : ""
                 }`}
               >
-                {/* Profile Picture */}
                 <div className="w-10 h-10 rounded-full border-2 border-[#337EFF] overflow-hidden">
                   <img
                     src={
                       msg.senderId === authUser._id
-                        ? authUser.profilePic
-                        : "/avatar.png"
+                        ? authUser.profilePic || "/avatar.png"
+                        : selectedUser.profilePic || "/avatar.png"
                     }
                     alt="profile pic"
                     className="object-cover w-full h-full"
                   />
                 </div>
-
-                {/* Message Body */}
                 <div className="flex flex-col">
                   <div className="text-xs text-[#747881] mb-1">
                     {msg.senderId === authUser._id ? "You" : "User"}
@@ -124,16 +93,6 @@ export default function ChatContainer({ onBackClick }) {
                         : "bg-[#272A30] text-[#FFFFFF]"
                     }`}
                   >
-                    {/* File, Audio, Image, or Text Message */}
-                    {msg.file && (
-                      <div className="flex items-center gap-2 mb-2">
-                        <File className="text-white" size={24} />
-                        <span>{msg.file.name}</span>
-                      </div>
-                    )}
-                    {msg.audio && (
-                      <audio controls src={msg.audio} className="mb-2" />
-                    )}
                     {msg.image && (
                       <div className="relative group mb-2">
                         <img
@@ -150,10 +109,9 @@ export default function ChatContainer({ onBackClick }) {
                       <p className="break-words text-sm">{msg.text}</p>
                     )}
                   </motion.div>
-                  {/* Seen Indicator */}
                   {msg.senderId === authUser._id &&
                     index === messages.length - 1 && (
-                      <div className="text-xs text-[#747881] flex items-center mt-1 self-end">
+                      <div className="text-xs text-[#337EFF] flex items-center mt-1 self-end">
                         <CheckCheck size={16} className="mr-1" /> Seen
                       </div>
                     )}
@@ -164,49 +122,8 @@ export default function ChatContainer({ onBackClick }) {
         </AnimatePresence>
       </motion.div>
 
-      {/* File/Audio Upload Section */}
-      {(fileUrl || audioUrl) && (
-        <div className="bg-[#272A30] p-2 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {fileUrl && (
-              <div className="flex items-center gap-2">
-                <File className="text-[#337EFF]" size={24} />
-                <span className="text-[#FFFFFF]">{fileUrl.name}</span>
-              </div>
-            )}
-            {audioUrl && (
-              <audio controls src={audioUrl} className="max-w-[300px]" />
-            )}
-          </div>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={handleSendMultimedia}
-              className="bg-[#337EFF] text-white px-4 py-2 rounded-lg hover:bg-opacity-90"
-            >
-              Send
-            </button>
-            <button
-              onClick={() => {
-                setFileUrl(null);
-                setAudioUrl(null);
-              }}
-              className="text-[#747881] hover:text-[#FFFFFF]"
-            >
-              <X size={24} />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Message Input and Recorder */}
       <div className="flex justify-between items-center gap-4 p-4 bg-[#1C1E22]">
-        <input
-          type="file"
-          ref={fileInputRef}
-          className="hidden"
-          onChange={handleFileUpload}
-        />
-        <VoiceRecorder onRecordingComplete={handleAudioRecordingComplete} />
+        <VoiceRecorder />
         <MessageInput />
       </div>
     </div>
