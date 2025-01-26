@@ -128,7 +128,7 @@ const MessageInput = () => {
 
           <button
             type="button"
-            className={`hidden sm:flex btn btn-circle mt-2.5 c ${
+            className={`flex btn btn-circle mt-2.5 c ${
               imagePreview ? "text-emerald-500" : "text-zinc-400"
             }`}
             onClick={() => fileInputRef.current?.click()}

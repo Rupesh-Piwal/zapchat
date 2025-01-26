@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCheck, ImageIcon, File, X } from "lucide-react";
-
+import { CheckCheck, ImageIcon, File, X, ArrowLeft } from "lucide-react";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { formatMessageTime } from "../lib/utils";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
-import VoiceRecorder from "./VoiceRecorder"; // Import the VoiceRecorder component
+import VoiceRecorder from "./VoiceRecorder";
 
-export default function ChatContainer() {
+export default function ChatContainer({ onBackClick }) {
   const [audioUrl, setAudioUrl] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
   const { messages, getMessages, sendMessage, isMessagesLoading } =
@@ -28,7 +27,7 @@ export default function ChatContainer() {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [scrollContainerRef]);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -46,7 +45,7 @@ export default function ChatContainer() {
   };
 
   const handleAudioRecordingComplete = (url) => {
-    setAudioUrl(url); // Set the audio URL from VoiceRecorder
+    setAudioUrl(url);
   };
 
   const handleSendMultimedia = () => {
@@ -71,8 +70,18 @@ export default function ChatContainer() {
   if (isMessagesLoading) return <MessageSkeleton />;
 
   return (
-    <div className="flex-1 flex flex-col bg-[#080707] text-[#FFFFFF]">
-      <ChatHeader />
+    <div className="flex flex-col h-full bg-[#080707] text-[#FFFFFF] pt-16 md:pt-0">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 bg-[#1C1E22] sticky top-0 z-10 w-full">
+        <button onClick={onBackClick} className="md:hidden flex items-center">
+          <ArrowLeft className="text-[#FFFFFF]" size={24} />
+        </button>
+        <div className="flex-1 flex justify-center">
+          <ChatHeader />
+        </div>
+      </div>
+
+      {/* Messages Container */}
       <motion.div
         ref={scrollContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-[#337EFF] scrollbar-track-[#272A30]"
@@ -93,7 +102,7 @@ export default function ChatContainer() {
                   msg.senderId === authUser._id ? "flex-row-reverse" : ""
                 }`}
               >
-                <div className="size-10 rounded-full border-2 border-[#337EFF] overflow-hidden">
+                <div className="w-10 h-10 rounded-full border-2 border-[#337EFF] overflow-hidden">
                   <img
                     src={
                       msg.senderId === authUser._id
@@ -130,7 +139,7 @@ export default function ChatContainer() {
                     {msg.image && (
                       <div className="relative group mb-2">
                         <img
-                          src={msg.image}
+                          src={msg.image || "/placeholder.svg"}
                           alt="Attachment"
                           className="max-w-[200px] rounded-md"
                         />
@@ -155,6 +164,8 @@ export default function ChatContainer() {
           ))}
         </AnimatePresence>
       </motion.div>
+
+      {/* File/Audio Upload Section */}
       {(fileUrl || audioUrl) && (
         <div className="bg-[#272A30] p-2 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -187,7 +198,9 @@ export default function ChatContainer() {
           </div>
         </div>
       )}
-      <div className="flex justify-center items-center gap-4 p-4 bg-[#1C1E22]">
+
+      {/* Message Input and Recorder */}
+      <div className="flex justify-between items-center gap-4 p-4 bg-[#1C1E22]">
         <input
           type="file"
           ref={fileInputRef}
@@ -195,7 +208,6 @@ export default function ChatContainer() {
           onChange={handleFileUpload}
         />
         <VoiceRecorder onRecordingComplete={handleAudioRecordingComplete} />
-
         <MessageInput />
       </div>
     </div>
