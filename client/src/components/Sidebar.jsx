@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useChatStore } from "../store/useChatStore";
-import { useAuthStore } from "../store/useAuthStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
 import { Users, Search, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuthStore } from "../store/useAuthStore";
+import { useChatStore } from "../store/useChatStore";
+
 
 const Sidebar = () => {
   const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
@@ -48,7 +49,9 @@ const Sidebar = () => {
               document.documentElement.classList.toggle("sidebar-expanded")
             }
           >
+
             <ChevronDown className="size-4 text-[#FFFFFF]" />
+
           </button>
         </div>
         <div className="mt-4 hidden lg:block">
@@ -58,12 +61,14 @@ const Sidebar = () => {
               placeholder="Search contacts..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+
               className="w-full pl-9 pr-3 py-2 rounded-lg bg-[#272A30] text-[#FFFFFF] border border-[#337EFF]/20 focus:outline-none focus:ring-2 focus:ring-[#337EFF]"
+
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-4 text-[#747881]" />
           </div>
         </div>
-        <div className="mt-3 hidden lg:flex items-center justify-between">
+        <div className="mt-3 hidden lg:flex items-center justify-between text-base-content/60">
           <label className="cursor-pointer flex items-center gap-2">
             <input
               type="checkbox"
@@ -73,6 +78,7 @@ const Sidebar = () => {
             />
             <span className="text-sm text-[#FFFFFF]">Show online only</span>
           </label>
+
           <span className="text-xs text-[#747881]">
             {onlineUsers.length - 1} online
           </span>
@@ -80,25 +86,29 @@ const Sidebar = () => {
       </div>
 
       <div className="overflow-y-auto w-full py-3 flex-grow scrollbar-thin scrollbar-thumb-[#337EFF] scrollbar-track-[#272A30]">
+
         <AnimatePresence>
           {filteredUsers.map((user) => (
             <motion.button
               key={user._id}
               onClick={() => setSelectedUser(user)}
+
               className={`
                 w-full p-3 flex items-center gap-3
                 hover:bg-[#272A30] transition-colors
                 ${selectedUser?._id === user._id ? "bg-[#272A30]" : ""}
               `}
+
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.3 }}
             >
-              <div className="relative mx-auto lg:mx-0">
+              <div className="relative">
                 <img
                   src={user.profilePic || "/avatar.png"}
                   alt={user.fullName}
+
                   className="size-12 object-cover rounded-full border-2 border-[#337EFF]"
                 />
                 {onlineUsers.includes(user._id) && (

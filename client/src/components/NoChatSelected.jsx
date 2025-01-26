@@ -1,4 +1,3 @@
-import React from "react";
 import { MessageSquare, Users, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -11,7 +10,6 @@ const NoChatSelected = () => {
         transition={{ duration: 0.5 }}
         className="max-w-md text-center space-y-8"
       >
-        {/* Icon Display */}
         <div className="flex justify-center gap-6 mb-8">
           <motion.div
             whileHover={{ scale: 1.1 }}
@@ -39,8 +37,6 @@ const NoChatSelected = () => {
             </div>
           </motion.div>
         </div>
-
-        {/* Welcome Text */}
         <motion.h2
           className="text-3xl font-bold text-[#FFFFFF]"
           animate={{ opacity: [0.5, 1, 0.5] }}
@@ -52,8 +48,6 @@ const NoChatSelected = () => {
           Connect instantly with friends and colleagues. Select a conversation
           from the sidebar to start chatting!
         </p>
-
-        {/* Quick Start Guide */}
         <motion.div
           className="bg-[#272A30] p-6 rounded-xl shadow-lg border border-[#337EFF]/20"
           whileHover={{ scale: 1.05 }}
