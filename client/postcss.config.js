@@ -1,7 +1,7 @@
 export default {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-    daisyui: {},
-  },
+  plugins: [
+    require("tailwindcss"),
+    require("autoprefixer"),
+    require("daisyui"), 
+  ],
 };
