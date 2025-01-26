@@ -11,11 +11,11 @@ const Home = () => {
   const [isMobileView, setIsMobileView] = useState(true);
 
   const handleChatSelect = (user) => {
-    setIsMobileView(false);
+    setIsMobileView(false); // Hide sidebar and show chat container on mobile
   };
 
   const handleBackToList = () => {
-    setIsMobileView(true);
+    setIsMobileView(true); // Show sidebar and hide chat container on mobile
   };
 
   return (
@@ -25,7 +25,7 @@ const Home = () => {
           {/* Sidebar */}
           <div
             className={`md:w-20 lg:w-80 h-full transition-all duration-300 ease-in-out ${
-              isMobileView ? "w-full" : "w-0 md:w-20 lg:w-80"
+              isMobileView ? "block" : "hidden md:block"
             }`}
           >
             <Sidebar onChatSelect={handleChatSelect} />

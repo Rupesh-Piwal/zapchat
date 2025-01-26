@@ -27,7 +27,7 @@ export default function ChatContainer({ onBackClick }) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
-  }, [scrollContainerRef]);
+  }, [messages]);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -70,9 +70,11 @@ export default function ChatContainer({ onBackClick }) {
   if (isMessagesLoading) return <MessageSkeleton />;
 
   return (
-    <div className="flex flex-col h-full bg-[#080707] text-[#FFFFFF] pt-16 md:pt-0">
+    <div className="flex flex-col h-full bg-[#080707] text-[#FFFFFF]">
+      {/* Chat Header with Back Button */}
       <ChatHeader onBackClick={onBackClick} />
-      {/* Messages Container */}
+
+      {/* Chat Messages */}
       <motion.div
         ref={scrollContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-[#337EFF] scrollbar-track-[#272A30]"
@@ -88,11 +90,13 @@ export default function ChatContainer({ onBackClick }) {
                 msg.senderId === authUser._id ? "justify-end" : "justify-start"
               }`}
             >
+              {/* Message Content */}
               <div
                 className={`flex items-start gap-2 max-w-[80%] ${
                   msg.senderId === authUser._id ? "flex-row-reverse" : ""
                 }`}
               >
+                {/* Profile Picture */}
                 <div className="w-10 h-10 rounded-full border-2 border-[#337EFF] overflow-hidden">
                   <img
                     src={
@@ -104,6 +108,8 @@ export default function ChatContainer({ onBackClick }) {
                     className="object-cover w-full h-full"
                   />
                 </div>
+
+                {/* Message Body */}
                 <div className="flex flex-col">
                   <div className="text-xs text-[#747881] mb-1">
                     {msg.senderId === authUser._id ? "You" : "User"}
@@ -118,6 +124,7 @@ export default function ChatContainer({ onBackClick }) {
                         : "bg-[#272A30] text-[#FFFFFF]"
                     }`}
                   >
+                    {/* File, Audio, Image, or Text Message */}
                     {msg.file && (
                       <div className="flex items-center gap-2 mb-2">
                         <File className="text-white" size={24} />
@@ -143,6 +150,7 @@ export default function ChatContainer({ onBackClick }) {
                       <p className="break-words text-sm">{msg.text}</p>
                     )}
                   </motion.div>
+                  {/* Seen Indicator */}
                   {msg.senderId === authUser._id &&
                     index === messages.length - 1 && (
                       <div className="text-xs text-[#747881] flex items-center mt-1 self-end">
