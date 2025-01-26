@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const NoChatSelected = () => {
   return (
-    <div className="w-full flex flex-1 flex-col items-center justify-center p-8 bg-[#080707]">
+    <div className="w-full hidden md:flex flex-1 flex-col items-center justify-center p-8 bg-[#080707] ">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

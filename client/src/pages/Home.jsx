@@ -37,7 +37,11 @@ const Home = () => {
                   : "translate-x-0 md:relative md:flex-1"
               }`}
             >
-              {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
+              {!selectedUser ? (
+                <NoChatSelected />
+              ) : (
+                <ChatContainer onBackClick={handleBackToList} />
+              )}
             </div>
           </div>
         </div>

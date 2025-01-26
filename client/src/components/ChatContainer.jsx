@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCheck, ImageIcon, File, X, ArrowLeft } from "lucide-react";
-import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { formatMessageTime } from "../lib/utils";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import VoiceRecorder from "./VoiceRecorder";
+import ChatHeader from "./ChatHeader";
 
 export default function ChatContainer({ onBackClick }) {
   const [audioUrl, setAudioUrl] = useState(null);
@@ -71,16 +71,7 @@ export default function ChatContainer({ onBackClick }) {
 
   return (
     <div className="flex flex-col h-full bg-[#080707] text-[#FFFFFF] pt-16 md:pt-0">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 bg-[#1C1E22] sticky top-0 z-10 w-full">
-        <button onClick={onBackClick} className="md:hidden flex items-center">
-          <ArrowLeft className="text-[#FFFFFF]" size={24} />
-        </button>
-        <div className="flex-1 flex justify-center">
-          <ChatHeader />
-        </div>
-      </div>
-
+      <ChatHeader onBackClick={onBackClick} />
       {/* Messages Container */}
       <motion.div
         ref={scrollContainerRef}

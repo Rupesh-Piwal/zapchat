@@ -1,23 +1,20 @@
-import { X } from "lucide-react";
+import { X, ArrowLeft } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 
-const ChatHeader = () => {
+const ChatHeader = ({ onBackClick }) => {
   const { selectedUser, setSelectedUser } = useChatStore();
-
   const { onlineUsers } = useAuthStore();
 
   return (
-    <div className="w-full p-2.5">
-      <div className="flex items-center justify-between">
+    <div className="w-full p-2.5 bg-[#1C1E22] sticky top-0 z-10 flex items-center justify-between">
+      <div className="flex flex-row items-center gap-3">
+        <button onClick={onBackClick} className="md:hidden flex items-center">
+          <ArrowLeft className="text-[#FFFFFF]" size={24} />
+        </button>
         <div className="flex items-center gap-3">
-          <div className="avatar">
-            <div className="size-10 rounded-full relative">
-              <img
-                src={selectedUser.profilePic || "/avatar.png"}
-                alt={selectedUser.fullName}
-              />
-            </div>
+          <div className="size-10 rounded-full overflow-hidden">
+            <img src={selectedUser.profilePic || "/avatar.png"} alt="profile" />
           </div>
           <div>
             <h3 className="font-medium">{selectedUser.fullName}</h3>
@@ -32,11 +29,12 @@ const ChatHeader = () => {
             </p>
           </div>
         </div>
-        <button onClick={() => setSelectedUser(null)}>
-          <X />
-        </button>
       </div>
+      <button className="hidden md:block" onClick={() => setSelectedUser(null)}>
+        <X />
+      </button>
     </div>
   );
 };
+
 export default ChatHeader;
