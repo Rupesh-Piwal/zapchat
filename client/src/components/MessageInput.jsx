@@ -32,56 +32,18 @@ const MessageInput = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  // Audio handling
-  const startRecording = () => {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ audio: true })
-        .then((stream) => {
-          const mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.start();
-
-          const audioChunks = [];
-          mediaRecorder.ondataavailable = (event) => {
-            audioChunks.push(event.data);
-          };
-
-          mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-            setAudioBlob(audioBlob);
-            setIsRecording(false);
-          };
-
-          audioRef.current = mediaRecorder;
-          setIsRecording(true);
-        })
-        .catch((error) => {
-          console.error("Error accessing audio:", error);
-        });
-    }
-  };
-
-  const stopRecording = () => {
-    if (audioRef.current) {
-      audioRef.current.stop();
-    }
-  };
-
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!text.trim() && !imagePreview && !audioBlob) return;
+    if (!text.trim() && !imagePreview) return;
 
     try {
       await sendMessage({
         text: text.trim(),
         image: imagePreview,
-        audio: audioBlob,
       });
 
-      // Clear form
       setText("");
       setImagePreview(null);
-      setAudioBlob(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       console.error("Failed to send message:", error);
