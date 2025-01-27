@@ -32,16 +32,16 @@ const Sidebar = ({ onChatSelect }) => {
   if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
-    <aside className="h-full w-screen md:w-20 lg:w-80 border-r border-[#272A30] flex flex-col transition-all duration-300 bg-[#1C1E22] backdrop-blur-sm">
+    <aside className="h-full w-screen md:w-20 lg:w-80 border-r border-[#272A30] flex flex-col transition-all duration-300 bg-[#17191C] backdrop-blur-sm">
       <div className="border-b border-[#272A30] w-full p-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2">
           <Users className="size-6 text-[#337EFF]" />
           <span className="font-semibold text-lg text-[#FFFFFF] hidden lg:block">
             Contacts
           </span>
         </div>
         <button
-          className="p-2 rounded-full hover:bg-[#272A30] lg:hidden"
+          className="p-2 rounded-full hover:bg-[#272A30] hidden"
           onClick={() =>
             document.documentElement.classList.toggle("sidebar-expanded")
           }
