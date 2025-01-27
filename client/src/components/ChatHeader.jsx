@@ -7,7 +7,7 @@ const ChatHeader = ({ onBackClick }) => {
   const { onlineUsers } = useAuthStore();
 
   return (
-    <div className="w-full p-2.5 bg-[#1C1E22] sticky top-0 z-10 flex items-center justify-between">
+    <div className="w-full p-2.5 bg-[#1C1E22]/50 sticky top-0 z-10 flex items-center justify-between">
       <div className="flex flex-row items-center gap-3">
         <button onClick={onBackClick} className="md:hidden flex items-center">
           <ArrowLeft className="text-[#FFFFFF]" size={24} />

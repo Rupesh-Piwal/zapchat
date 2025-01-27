@@ -10,8 +10,6 @@ import VoiceRecorder from "./VoiceRecorder";
 import ChatHeader from "./ChatHeader";
 
 export default function ChatContainer({ onBackClick }) {
-  const [audioUrl, setAudioUrl] = useState(null);
-  const [fileUrl, setFileUrl] = useState(null);
   const {
     messages,
     getMessages,
